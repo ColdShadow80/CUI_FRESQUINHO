@@ -67,10 +67,10 @@ function calculateCheckDigits(base) {
 
 function copiarParaClipboard(texto, btn) {
   navigator.clipboard.writeText(texto).then(() => {
-    const tooltip = btn.querySelector('.tooltiptext');
-    tooltip.textContent = 'Copiado!';
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '✓';
     setTimeout(() => {
-      tooltip.textContent = 'Copiar';
+      btn.innerHTML = originalHTML;
     }, 2000);
   }).catch(err => {
     console.error('Erro ao copiar: ', err);
@@ -90,36 +90,30 @@ function gerarCUI() {
     const resultadoDiv = document.getElementById('resultado');
     
     const digitosFixos = 12 - digitosAleatorios;
-    const parteFixa = codigoLocal.slice(0, digitosFixos);
     const parteAleatoria = codigoLocal.slice(digitosFixos);
     
     resultadoDiv.innerHTML = `
-      <div class="result-header">
-        <strong>CUI Gerado: ${cuiCompleto}</strong>
-        <button class="copy-btn tooltip">
-          📋<span class="tooltiptext">Copiar</span>
-        </button>
+      <div class="copy-container">
+        <button class="copy-btn" title="Copiar CUI" onclick="copiarParaClipboard('${cuiCompleto}', this)">📋</button>
       </div>
-      <div class="cui-details">
-        <strong>Dígitos aleatórios:</strong> ${digitosAleatorios} (${'0'.repeat(digitosFixos)}<span class="random-part">${parteAleatoria}</span>)
-      </div>
-      <div class="cui-structure">
-        <div><strong>País:</strong> ${prefixo}</div>
-        <div><strong>Código operador:</strong> ${operador}</div>
-        <div><strong>Código livre:</strong> ${codigoLocal}</div>
-        <div><strong>Código verificação:</strong> ${checkDigits}</div>
+      <div class="result-content">
+        <strong>CUI Gerado:</strong> ${cuiCompleto}
+        <div class="cui-details">
+          <strong>Dígitos aleatórios:</strong> ${digitosAleatorios} (<span class="random-part">${parteAleatoria}</span>)
+        </div>
+        <div class="cui-structure">
+          <div><strong>País:</strong> ${prefixo}</div>
+          <div><strong>Código operador:</strong> ${operador}</div>
+          <div><strong>Código livre:</strong> ${codigoLocal}</div>
+          <div><strong>Código verificação:</strong> ${checkDigits}</div>
+        </div>
       </div>
     `;
-    
-    // Adiciona evento de clique ao botão de copiar
-    resultadoDiv.querySelector('.copy-btn').addEventListener('click', function() {
-      copiarParaClipboard(cuiCompleto, this);
-    });
     
     resultadoDiv.className = 'result-box success';
   } catch (error) {
     const resultadoDiv = document.getElementById('resultado');
-    resultadoDiv.innerHTML = `❌ <strong>Erro ao gerar CUI:</strong> ${error.message}`;
+    resultadoDiv.innerHTML = `<div class="result-content">❌ <strong>Erro ao gerar CUI:</strong> ${error.message}</div>`;
     resultadoDiv.className = 'result-box error';
   }
 }
@@ -137,18 +131,13 @@ function gerarCheckDigits() {
 
     const checkDigits = calculateCheckDigits(cuiInput);
     checkDigitsDiv.innerHTML = `
-      <div class="result-header">
-        <strong>Dígitos de verificação: ${checkDigits}</strong>
-        <button class="copy-btn tooltip">
-          📋<span class="tooltiptext">Copiar</span>
-        </button>
+      <div class="copy-container">
+        <button class="copy-btn" title="Copiar dígitos" onclick="copiarParaClipboard('${checkDigits}', this)">📋</button>
+      </div>
+      <div class="result-content">
+        <strong>Dígitos de verificação:</strong> ${checkDigits}
       </div>
     `;
-    
-    // Adiciona evento de clique ao botão de copiar
-    checkDigitsDiv.querySelector('.copy-btn').addEventListener('click', function() {
-      copiarParaClipboard(checkDigits, this);
-    });
     
     checkDigitsDiv.className = 'result-box success';
   } catch (error) {
