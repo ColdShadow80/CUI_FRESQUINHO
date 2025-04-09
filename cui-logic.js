@@ -23,10 +23,6 @@ function gerarCodigoLocal() {
   const digitosAleatorios = parseInt(document.getElementById('digitosAleatorios').value);
   const digitosFixos = 12 - digitosAleatorios;
   
-  if (digitosFixos < 3) {
-    throw new Error('O código local deve ter no mínimo 3 dígitos fixos (zeros)');
-  }
-  
   let codigo = '';
   
   // Parte fixa (zeros)
@@ -69,6 +65,18 @@ function calculateCheckDigits(base) {
   return table[a] + table[b];
 }
 
+function copiarParaClipboard(texto, elemento) {
+  navigator.clipboard.writeText(texto).then(() => {
+    const tooltip = elemento.querySelector('.tooltiptext');
+    tooltip.textContent = 'Copiado!';
+    setTimeout(() => {
+      tooltip.textContent = 'Copiar para clipboard';
+    }, 2000);
+  }).catch(err => {
+    console.error('Erro ao copiar: ', err);
+  });
+}
+
 function gerarCUI() {
   try {
     const prefixo = 'PT';
@@ -86,7 +94,12 @@ function gerarCUI() {
     const parteAleatoria = codigoLocal.slice(digitosFixos);
     
     resultadoDiv.innerHTML = `
-      <strong>CUI Gerado:</strong> ${cuiCompleto}<br>
+      <div class="result-header">
+        <strong>CUI Gerado:</strong> ${cuiCompleto}
+        <button class="copy-btn tooltip" onclick="copiarParaClipboard('${cuiCompleto}', this)">
+          📋<span class="tooltiptext">Copiar para clipboard</span>
+        </button>
+      </div>
       <div class="cui-details">
         <strong>Dígitos aleatórios:</strong> ${digitosAleatorios} (${'0'.repeat(digitosFixos)}<span class="random-part">${parteAleatoria}</span>)
       </div>
@@ -102,6 +115,34 @@ function gerarCUI() {
     const resultadoDiv = document.getElementById('resultado');
     resultadoDiv.innerHTML = `❌ <strong>Erro ao gerar CUI:</strong> ${error.message}`;
     resultadoDiv.className = 'result-box error';
+  }
+}
+
+function gerarCheckDigits() {
+  try {
+    const cuiInput = document.getElementById('cuiCheck').value.trim().toUpperCase();
+    const checkDigitsDiv = document.getElementById('checkDigits');
+    
+    if (cuiInput.length !== 18) {
+      checkDigitsDiv.textContent = '❌ Comprimento inválido! Deve ter 18 caracteres (incluindo PT).';
+      checkDigitsDiv.className = 'result-box error';
+      return;
+    }
+
+    const checkDigits = calculateCheckDigits(cuiInput);
+    checkDigitsDiv.innerHTML = `
+      <div class="result-header">
+        <strong>Dígitos de verificação:</strong> ${checkDigits}
+        <button class="copy-btn tooltip" onclick="copiarParaClipboard('${checkDigits}', this)">
+          📋<span class="tooltiptext">Copiar para clipboard</span>
+        </button>
+      </div>
+    `;
+    checkDigitsDiv.className = 'result-box success';
+  } catch (error) {
+    const checkDigitsDiv = document.getElementById('checkDigits');
+    checkDigitsDiv.textContent = `❌ Erro no cálculo: ${error.message}`;
+    checkDigitsDiv.className = 'result-box error';
   }
 }
 
@@ -131,26 +172,5 @@ function validarCUI() {
     const validacaoDiv = document.getElementById('validacao');
     validacaoDiv.textContent = `❌ Erro na validação: ${error.message}`;
     validacaoDiv.className = 'result-box error';
-  }
-}
-
-function gerarCheckDigits() {
-  try {
-    const cuiInput = document.getElementById('cuiCheck').value.trim().toUpperCase();
-    const checkDigitsDiv = document.getElementById('checkDigits');
-    
-    if (cuiInput.length !== 18) {
-      checkDigitsDiv.textContent = '❌ Comprimento inválido! Deve ter 18 caracteres (incluindo PT).';
-      checkDigitsDiv.className = 'result-box error';
-      return;
-    }
-
-    const checkDigits = calculateCheckDigits(cuiInput);
-    checkDigitsDiv.textContent = `Dígitos de verificação: ${checkDigits}`;
-    checkDigitsDiv.className = 'result-box success';
-  } catch (error) {
-    const checkDigitsDiv = document.getElementById('checkDigits');
-    checkDigitsDiv.textContent = `❌ Erro no cálculo: ${error.message}`;
-    checkDigitsDiv.className = 'result-box error';
   }
 }
