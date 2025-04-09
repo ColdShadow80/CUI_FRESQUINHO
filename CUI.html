@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador e Validador de CUI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1em;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .section {
+      background: #f9f9f9;
+      padding: 1.5em;
+      margin-bottom: 1.5em;
+      border-radius: 8px;
+      border-left: 4px solid #4CAF50;
+    }
+    .section h2 {
+      margin-top: 0;
+      color: #2E7D32;
+    }
+    select, button, input {
+      width: 100%;
+      padding: 0.75em;
+      margin: 0.5em 0 1em 0;
+      font-size: 1em;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result-box {
+      font-weight: bold;
+      font-size: 1.1em;
+      background: #e8f5e9;
+      padding: 1em;
+      border-radius: 5px;
+      word-break: break-all;
+      border: 1px solid #c8e6c9;
+      margin-top: 0.5em;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.3em;
+    }
+    .error {
+      background-color: #ffebee;
+      border-color: #ef9a9a;
+    }
+    .success {
+      background-color: #e8f5e9;
+      border-color: #c8e6c9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align: center; color: #2E7D32;">Gerador e Validador de CUI</h1>
+    
+    <!-- Seção 1: Gerador de CUI -->
+    <div class="section">
+      <h2>🔧 Gerar Novo CUI</h2>
+      <label for="operador">Operador de Rede:</label>
+      <select id="operador">
+        <option value="1601">1601 - REN Portgás</option>
+        <option value="1602">1602 - Lusitaniagás</option>
+        <option value="1603">1603 - Beiragás</option>
+        <option value="1604">1604 - Tagusgás</option>
+        <option value="1605">1605 - Lisboagás</option>
+        <option value="1606">1606 - Setgás</option>
+        <option value="1701">1701 - Sonorgás</option>
+        <option value="1702">1702 - Duriensegás</option>
+        <option value="1703">1703 - Dianagás</option>
+        <option value="1704">1704 - Paxgás</option> 
+        <option value="1705">1705 - Mediagás</option>  
+      </select>
+      <button id="gerarBtn">Gerar Código CUI</button>
+      <div id="resultado" class="result-box">Aguardando geração...</div>
+    </div>
+    
+    <!-- Seção 2: Validador de CUI -->
+    <div class="section">
+      <h2>🔍 Validar CUI Existente</h2>
+      <label for="cui">Insira o CUI completo (20 caracteres):</label>
+      <input type="text" id="cui" placeholder="PT1601000000000AA" maxlength="20">
+      <button id="validarBtn">Validar Código</button>
+      <div id="validacao" class="result-box">Resultado da validação aparecerá aqui</div>
+    </div>
+    
+    <!-- Seção 3: Gerador de Dígitos de Verificação -->
+    <div class="section">
+      <h2>🔢 Gerar Dígitos de Verificação</h2>
+      <label for="cuiCheck">Insira o CUI sem os 2 últimos dígitos (18 caracteres):</label>
+      <input type="text" id="cuiCheck" placeholder="PT1601000000000" maxlength="18">
+      <button id="digitosBtn">Calcular Dígitos</button>
+      <div id="checkDigits" class="result-box">Dígitos calculados aparecerão aqui</div>
+    </div>
+  </div>
+
+  <script src="cui-logic.js"></script>
+</body>
+</html>
