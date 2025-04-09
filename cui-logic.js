@@ -25,12 +25,10 @@ function gerarCodigoLocal() {
   
   let codigo = '';
   
-  // Parte fixa (zeros)
   for (let i = 0; i < digitosFixos; i++) {
     codigo += '0';
   }
   
-  // Parte aleatória
   for (let i = 0; i < digitosAleatorios; i++) {
     codigo += Math.floor(Math.random() * 10).toString();
   }
@@ -65,9 +63,9 @@ function calculateCheckDigits(base) {
   return table[a] + table[b];
 }
 
-function copiarParaClipboard(texto, elemento) {
+function copiarParaClipboard(texto, btn) {
   navigator.clipboard.writeText(texto).then(() => {
-    const tooltip = elemento.querySelector('.tooltiptext');
+    const tooltip = btn.querySelector('.tooltiptext');
     tooltip.textContent = 'Copiado!';
     setTimeout(() => {
       tooltip.textContent = 'Copiar para clipboard';
@@ -96,7 +94,7 @@ function gerarCUI() {
     resultadoDiv.innerHTML = `
       <div class="result-header">
         <strong>CUI Gerado:</strong> ${cuiCompleto}
-        <button class="copy-btn tooltip" onclick="copiarParaClipboard('${cuiCompleto}', this)">
+        <button class="copy-btn tooltip">
           📋<span class="tooltiptext">Copiar para clipboard</span>
         </button>
       </div>
@@ -110,6 +108,12 @@ function gerarCUI() {
         <div><strong>Código verificação:</strong> ${checkDigits}</div>
       </div>
     `;
+    
+    // Adiciona o event listener ao botão de copiar
+    resultadoDiv.querySelector('.copy-btn').addEventListener('click', function() {
+      copiarParaClipboard(cuiCompleto, this);
+    });
+    
     resultadoDiv.className = 'result-box success';
   } catch (error) {
     const resultadoDiv = document.getElementById('resultado');
@@ -133,11 +137,17 @@ function gerarCheckDigits() {
     checkDigitsDiv.innerHTML = `
       <div class="result-header">
         <strong>Dígitos de verificação:</strong> ${checkDigits}
-        <button class="copy-btn tooltip" onclick="copiarParaClipboard('${checkDigits}', this)">
+        <button class="copy-btn tooltip">
           📋<span class="tooltiptext">Copiar para clipboard</span>
         </button>
       </div>
     `;
+    
+    // Adiciona o event listener ao botão de copiar
+    checkDigitsDiv.querySelector('.copy-btn').addEventListener('click', function() {
+      copiarParaClipboard(checkDigits, this);
+    });
+    
     checkDigitsDiv.className = 'result-box success';
   } catch (error) {
     const checkDigitsDiv = document.getElementById('checkDigits');
