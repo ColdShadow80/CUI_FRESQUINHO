@@ -90,13 +90,19 @@
       margin-top: 0.5em;
       color: #555;
     }
+    .fixed-part {
+      color: #777;
+    }
+    .random-part {
+      font-weight: bold;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1 style="text-align: center; color: #2E7D32;">Gerador e Validador de CUI</h1>
     
-    <!-- Seção 1: Gerador de CUI -->
     <div class="section">
       <h2>🔧 Gerar Novo CUI</h2>
       <label for="operador">Operador de Rede:</label>
@@ -114,9 +120,9 @@
         <option value="1705">1705 - Mediagás</option>  
       </select>
       
-      <label for="digitosAleatorios">Dígitos aleatórios no código local:</label>
+      <label for="digitosAleatorios">Dígitos aleatórios no código local (1-9):</label>
       <div class="range-container">
-        <input type="range" id="digitosAleatorios" min="1" max="11" value="7" 
+        <input type="range" id="digitosAleatorios" min="1" max="9" value="7" 
                oninput="document.getElementById('valorDigitos').textContent = this.value">
         <span id="valorDigitos">7</span>
       </div>
@@ -125,7 +131,6 @@
       <div id="resultado" class="result-box">Aguardando geração...</div>
     </div>
     
-    <!-- Seção 2: Validador de CUI -->
     <div class="section">
       <h2>🔍 Validar CUI Existente</h2>
       <label for="cui">Insira o CUI completo (20 caracteres):</label>
@@ -134,7 +139,6 @@
       <div id="validacao" class="result-box">Resultado da validação aparecerá aqui</div>
     </div>
     
-    <!-- Seção 3: Gerador de Dígitos de Verificação -->
     <div class="section">
       <h2>🔢 Gerar Dígitos de Verificação</h2>
       <label for="cuiCheck">Insira o CUI sem os 2 últimos dígitos (18 caracteres):</label>
