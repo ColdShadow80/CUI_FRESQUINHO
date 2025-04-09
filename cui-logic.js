@@ -1,11 +1,8 @@
-// Configuração inicial
 document.addEventListener('DOMContentLoaded', function() {
-  // Event listeners
   document.getElementById('gerarBtn').addEventListener('click', gerarCUI);
   document.getElementById('validarBtn').addEventListener('click', validarCUI);
   document.getElementById('digitosBtn').addEventListener('click', gerarCheckDigits);
   
-  // Limpar mensagens ao editar campos
   document.getElementById('cui').addEventListener('input', limparValidacao);
   document.getElementById('cuiCheck').addEventListener('input', limparCheckDigits);
 });
@@ -26,14 +23,19 @@ function gerarCodigoLocal() {
   const digitosAleatorios = parseInt(document.getElementById('digitosAleatorios').value);
   const digitosFixos = 12 - digitosAleatorios;
   
+  // Garante que temos pelo menos 3 dígitos fixos
+  if (digitosFixos < 3) {
+    throw new Error('O código local deve ter no mínimo 3 dígitos fixos (zeros)');
+  }
+  
   let codigo = '';
   
-  // Adiciona zeros não significativos
+  // Parte fixa (zeros)
   for (let i = 0; i < digitosFixos; i++) {
     codigo += '0';
   }
   
-  // Adiciona dígitos aleatórios
+  // Parte aleatória
   for (let i = 0; i < digitosAleatorios; i++) {
     codigo += Math.floor(Math.random() * 10).toString();
   }
@@ -84,16 +86,17 @@ function gerarCUI() {
     const cuiCompleto = base + checkDigits;
     const resultadoDiv = document.getElementById('resultado');
     
-    // Formatação visual dos dígitos
-    const zeros = 12 - digitosAleatorios;
-    const parteFixa = codigoLocal.slice(0, zeros);
-    const parteAleatoria = codigoLocal.slice(zeros);
+    const digitosFixos = 12 - digitosAleatorios;
+    const parteFixa = codigoLocal.slice(0, digitosFixos);
+    const parteAleatoria = codigoLocal.slice(digitosFixos);
     
     resultadoDiv.innerHTML = `
       <strong>CUI Gerado:</strong> ${formatarCUI(cuiCompleto)}<br>
       <div class="cui-details">
-        <strong>Estrutura:</strong> PT-${operador}-${parteFixa}<span style="font-weight:bold">${parteAleatoria.slice(0,6-zeros)}</span>-<span style="font-weight:bold">${parteAleatoria.slice(6-zeros)}</span>-${checkDigits}<br>
-        <strong>Dígitos aleatórios:</strong> ${digitosAleatorios} (${'0'.repeat(zeros)}<u>${parteAleatoria}</u>)
+        <strong>Estrutura:</strong> 
+        PT-${operador}-<span class="fixed-part">${parteFixa}</span><span class="random-part">${parteAleatoria}</span>-${checkDigits}<br>
+        <strong>Dígitos:</strong> Fixos (${digitosFixos}): <span class="fixed-part">${parteFixa}</span> | 
+        Aleatórios (${digitosAleatorios}): <span class="random-part">${parteAleatoria}</span>
       </div>
     `;
     resultadoDiv.className = 'result-box success';
