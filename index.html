@@ -48,6 +48,7 @@
       background-color: #45a049;
     }
     .result-box {
+      position: relative;
       font-weight: bold;
       font-size: 1.1em;
       background: #e8f5e9;
@@ -56,6 +57,23 @@
       word-break: break-all;
       border: 1px solid #c8e6c9;
       margin-top: 0.5em;
+    }
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .copy-btn {
+      background: none;
+      border: none;
+      color: #2E7D32;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0.3em;
+      margin-left: 0.5em;
+    }
+    .copy-btn:hover {
+      color: #1B5E20;
     }
     label {
       font-weight: bold;
@@ -105,6 +123,30 @@
     .cui-structure div {
       margin: 5px 0;
     }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -125,12 +167,12 @@
         <option value="1702">1702 - Duriensegás</option>
         <option value="1703">1703 - Dianagás</option>
         <option value="1704">1704 - Paxgás</option> 
-        <option value="1705">1705 - Medigás</option>  
+        <option value="1705">1705 - Mediagás</option>  
       </select>
       
-      <label for="digitosAleatorios">Dígitos aleatórios no código local (1-9):</label>
+      <label for="digitosAleatorios">Dígitos aleatórios no código local (1-12):</label>
       <div class="range-container">
-        <input type="range" id="digitosAleatorios" min="1" max="9" value="7" 
+        <input type="range" id="digitosAleatorios" min="1" max="12" value="7" 
                oninput="document.getElementById('valorDigitos').textContent = this.value">
         <span id="valorDigitos">7</span>
       </div>
