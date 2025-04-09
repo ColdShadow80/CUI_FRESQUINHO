@@ -22,10 +22,9 @@ function limparCheckDigits() {
   checkDigitsDiv.className = 'result-box';
 }
 
-// Gera um código local com dígitos aleatórios controláveis
 function gerarCodigoLocal() {
   const digitosAleatorios = parseInt(document.getElementById('digitosAleatorios').value);
-  const digitosFixos = 12 - digitosAleatorios; // Total de 12 dígitos no código local
+  const digitosFixos = 12 - digitosAleatorios;
   
   let codigo = '';
   
@@ -42,21 +41,17 @@ function gerarCodigoLocal() {
   return codigo;
 }
 
-// Formata o CUI para exibição com separadores
 function formatarCUI(cui) {
   return `${cui.slice(0,2)}-${cui.slice(2,6)}-${cui.slice(6,12)}-${cui.slice(12,18)}-${cui.slice(18)}`;
 }
 
-// Calcula os dígitos de verificação conforme regulamento
 function calculateCheckDigits(base) {
-  // Remove prefixo do país (PT) se existir
   const numericPart = base.startsWith('PT') ? base.slice(2) : base;
   
   if (numericPart.length !== 16) {
     throw new Error('A parte numérica deve ter 16 dígitos');
   }
 
-  // Calcula módulo 529
   let mod = 0;
   for (let i = 0; i < numericPart.length; i++) {
     const digit = parseInt(numericPart[i], 10);
@@ -66,10 +61,9 @@ function calculateCheckDigits(base) {
     mod = (mod * 10 + digit) % 529;
   }
 
-  // Tabela de caracteres para dígitos de verificação
   const table = [
-    'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', // 0-10
-    'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E' // 11-22
+    'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X',
+    'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'
   ];
 
   const a = Math.floor(mod / 23);
@@ -78,11 +72,11 @@ function calculateCheckDigits(base) {
   return table[a] + table[b];
 }
 
-// Gera um CUI completo
 function gerarCUI() {
   try {
     const prefixo = 'PT';
     const operador = document.getElementById('operador').value;
+    const digitosAleatorios = parseInt(document.getElementById('digitosAleatorios').value);
     const codigoLocal = gerarCodigoLocal();
     const base = prefixo + operador + codigoLocal;
     const checkDigits = calculateCheckDigits(base);
@@ -90,22 +84,26 @@ function gerarCUI() {
     const cuiCompleto = base + checkDigits;
     const resultadoDiv = document.getElementById('resultado');
     
+    // Formatação visual dos dígitos
+    const zeros = 12 - digitosAleatorios;
+    const parteFixa = codigoLocal.slice(0, zeros);
+    const parteAleatoria = codigoLocal.slice(zeros);
+    
     resultadoDiv.innerHTML = `
       <strong>CUI Gerado:</strong> ${formatarCUI(cuiCompleto)}<br>
       <div class="cui-details">
-        Estrutura: PT-${operador}-${codigoLocal.slice(0,6)}-${codigoLocal.slice(6)}-${checkDigits}<br>
-        Dígitos aleatórios: ${document.getElementById('digitosAleatorios').value}
+        <strong>Estrutura:</strong> PT-${operador}-${parteFixa}<span style="font-weight:bold">${parteAleatoria.slice(0,6-zeros)}</span>-<span style="font-weight:bold">${parteAleatoria.slice(6-zeros)}</span>-${checkDigits}<br>
+        <strong>Dígitos aleatórios:</strong> ${digitosAleatorios} (${'0'.repeat(zeros)}<u>${parteAleatoria}</u>)
       </div>
     `;
     resultadoDiv.className = 'result-box success';
   } catch (error) {
     const resultadoDiv = document.getElementById('resultado');
-    resultadoDiv.textContent = `❌ Erro ao gerar CUI: ${error.message}`;
+    resultadoDiv.innerHTML = `❌ <strong>Erro ao gerar CUI:</strong> ${error.message}`;
     resultadoDiv.className = 'result-box error';
   }
 }
 
-// Valida um CUI existente
 function validarCUI() {
   try {
     const cuiInput = document.getElementById('cui').value.trim().toUpperCase();
@@ -135,7 +133,6 @@ function validarCUI() {
   }
 }
 
-// Gera apenas os dígitos de verificação
 function gerarCheckDigits() {
   try {
     const cuiInput = document.getElementById('cuiCheck').value.trim().toUpperCase();
