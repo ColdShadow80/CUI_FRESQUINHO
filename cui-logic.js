@@ -25,10 +25,12 @@ function gerarCodigoLocal() {
   
   let codigo = '';
   
+  // Parte fixa (zeros)
   for (let i = 0; i < digitosFixos; i++) {
     codigo += '0';
   }
   
+  // Parte aleatória
   for (let i = 0; i < digitosAleatorios; i++) {
     codigo += Math.floor(Math.random() * 10).toString();
   }
@@ -68,7 +70,7 @@ function copiarParaClipboard(texto, btn) {
     const tooltip = btn.querySelector('.tooltiptext');
     tooltip.textContent = 'Copiado!';
     setTimeout(() => {
-      tooltip.textContent = 'Copiar para clipboard';
+      tooltip.textContent = 'Copiar';
     }, 2000);
   }).catch(err => {
     console.error('Erro ao copiar: ', err);
@@ -93,9 +95,9 @@ function gerarCUI() {
     
     resultadoDiv.innerHTML = `
       <div class="result-header">
-        <strong>CUI Gerado:</strong> ${cuiCompleto}
+        <strong>CUI Gerado: ${cuiCompleto}</strong>
         <button class="copy-btn tooltip">
-          📋<span class="tooltiptext">Copiar para clipboard</span>
+          📋<span class="tooltiptext">Copiar</span>
         </button>
       </div>
       <div class="cui-details">
@@ -109,7 +111,7 @@ function gerarCUI() {
       </div>
     `;
     
-    // Adiciona o event listener ao botão de copiar
+    // Adiciona evento de clique ao botão de copiar
     resultadoDiv.querySelector('.copy-btn').addEventListener('click', function() {
       copiarParaClipboard(cuiCompleto, this);
     });
@@ -136,14 +138,14 @@ function gerarCheckDigits() {
     const checkDigits = calculateCheckDigits(cuiInput);
     checkDigitsDiv.innerHTML = `
       <div class="result-header">
-        <strong>Dígitos de verificação:</strong> ${checkDigits}
+        <strong>Dígitos de verificação: ${checkDigits}</strong>
         <button class="copy-btn tooltip">
-          📋<span class="tooltiptext">Copiar para clipboard</span>
+          📋<span class="tooltiptext">Copiar</span>
         </button>
       </div>
     `;
     
-    // Adiciona o event listener ao botão de copiar
+    // Adiciona evento de clique ao botão de copiar
     checkDigitsDiv.querySelector('.copy-btn').addEventListener('click', function() {
       copiarParaClipboard(checkDigits, this);
     });
