@@ -70,6 +70,26 @@
       background-color: #e8f5e9;
       border-color: #c8e6c9;
     }
+    input[type="range"] {
+      width: 80%;
+      margin-right: 10px;
+    }
+    #valorDigitos {
+      min-width: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .range-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1em;
+    }
+    .cui-details {
+      font-size: 0.9em;
+      margin-top: 0.5em;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -93,6 +113,14 @@
         <option value="1704">1704 - Paxgás</option> 
         <option value="1705">1705 - Mediagás</option>  
       </select>
+      
+      <label for="digitosAleatorios">Dígitos aleatórios no código local:</label>
+      <div class="range-container">
+        <input type="range" id="digitosAleatorios" min="1" max="11" value="7" 
+               oninput="document.getElementById('valorDigitos').textContent = this.value">
+        <span id="valorDigitos">7</span>
+      </div>
+      
       <button id="gerarBtn">Gerar Código CUI</button>
       <div id="resultado" class="result-box">Aguardando geração...</div>
     </div>
