@@ -23,7 +23,6 @@ function gerarCodigoLocal() {
   const digitosAleatorios = parseInt(document.getElementById('digitosAleatorios').value);
   const digitosFixos = 12 - digitosAleatorios;
   
-  // Garante que temos pelo menos 3 dígitos fixos
   if (digitosFixos < 3) {
     throw new Error('O código local deve ter no mínimo 3 dígitos fixos (zeros)');
   }
@@ -41,10 +40,6 @@ function gerarCodigoLocal() {
   }
   
   return codigo;
-}
-
-function formatarCUI(cui) {
-  return `${cui.slice(0,2)}-${cui.slice(2,6)}-${cui.slice(6,12)}-${cui.slice(12,18)}-${cui.slice(18)}`;
 }
 
 function calculateCheckDigits(base) {
@@ -91,12 +86,15 @@ function gerarCUI() {
     const parteAleatoria = codigoLocal.slice(digitosFixos);
     
     resultadoDiv.innerHTML = `
-      <strong>CUI Gerado:</strong> ${formatarCUI(cuiCompleto)}<br>
+      <strong>CUI Gerado:</strong> ${cuiCompleto}<br>
       <div class="cui-details">
-        <strong>Estrutura:</strong> 
-        PT-${operador}-<span class="fixed-part">${parteFixa}</span><span class="random-part">${parteAleatoria}</span>-${checkDigits}<br>
-        <strong>Dígitos:</strong> Fixos (${digitosFixos}): <span class="fixed-part">${parteFixa}</span> | 
-        Aleatórios (${digitosAleatorios}): <span class="random-part">${parteAleatoria}</span>
+        <strong>Dígitos aleatórios:</strong> ${digitosAleatorios} (${'0'.repeat(digitosFixos)}<span class="random-part">${parteAleatoria}</span>)
+      </div>
+      <div class="cui-structure">
+        <div><strong>País:</strong> ${prefixo}</div>
+        <div><strong>Código operador:</strong> ${operador}</div>
+        <div><strong>Código livre:</strong> ${codigoLocal}</div>
+        <div><strong>Código verificação:</strong> ${checkDigits}</div>
       </div>
     `;
     resultadoDiv.className = 'result-box success';
