@@ -132,10 +132,11 @@ function gerarCheckDigits() {
     const checkDigits = calculateCheckDigits(cuiInput);
     checkDigitsDiv.innerHTML = `
       <div class="copy-container">
-        <button class="copy-btn" title="Copiar dígitos" onclick="copiarParaClipboard('${checkDigits}', this)">📋</button>
+        <button class="copy-btn" title="Copiar dígitos" onclick="copiarParaClipboard('${cuiInput}${checkDigits}', this)">📋</button>
       </div>
       <div class="result-content">
-        <strong>Dígitos de verificação:</strong> ${checkDigits}
+        <div><strong>Dígitos de verificação:</strong> ${checkDigits}<div>
+        <div><strong>CUI completo:</strong> ${cuiInput}${checkDigits}</div>
       </div>
     `;
     
